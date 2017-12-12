@@ -4,4 +4,4 @@ author: "Gonzalo de Quesada"
 date: "12 de diciembre de 2017"
 output: html_document
 ---
-In This repository I will add all the files related to the final assignment. The link to my diary: https://gonzalodqa.github.io/Final_Assignment/
+In This repository I will add all the files related to the final assignment. The link to my diary: https://gonzalodqa.github.io/IODS-final/
