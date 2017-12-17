@@ -13,11 +13,13 @@ html_document:
     fig_height: 4
     code_folding: hide
 ---
-## Introduction
+## Research question
+
+In this assignment we will explore the relations between maternal mortality and the expected years of schooling and adolescent birth rate. Our hypothesis is that the more adoscelent birth rate maternal mortality will increase because of the risks of pregnancy specially in younger women. Also how maternal mortality decrease with the years of schooling, this is assume because the more years of schooling could mean less adolescent pregnancy.
 
 ## Data
 
-The dataset comes from the United Nations Development Programme. this dataset is the product of two different datasets used to calculate the human development index. for more information about the data you can visit the United Nations Development Programme [website](http://hdr.undp.org/en/content/human-development-index-hdi) and also check the [technical notes](http://hdr.undp.org/sites/default/files/hdr2015_technical_notes.pdf).
+The dataset comes from the United Nations Development Programme. this dataset is the product of two different datasets used to calculate the human development index. for more information about the data you can visit the United Nations Development Programme [website](http://hdr.undp.org/en/content/human-development-index-hdi) and also check the [technical notes](http://hdr.undp.org/sites/default/files/hdr2015_technical_notes.pdf). you can also see the [data wrangling](https://github.com/gonzalodqa/IODS-final/blob/master/Data/create_human.R)
 
 Lets inspect the structure of the dataset.it contains 177 observations and 6 variables.
 
@@ -51,7 +53,7 @@ ggpairs(human)
 cor(human) %>% corrplot
 ```
 
-We can see a strong positive correlation between life expectancy at birth and 
+We can see a strong positive correlation between maternal mortality and adolescent birth rate, and also a strong negative correlation between maternal mortality and years of expected scholing 
 
 ## Methods
 
@@ -60,13 +62,13 @@ We can see a strong positive correlation between life expectancy at birth and
 ### Linear Regression
 
 ```{r, res}
-model <- lm(matermor ~ lifexp + adobirth, data = human)
+model <- lm(matermor ~ yr.eduexp + adobirth, data = human)
 summary(model)
 model
 ```
 
 ```{r, model}
-g1 <- ggplot(human, aes(x=matermor, y=lifexp + adobirth))
+g1 <- ggplot(human, aes(x=matermor, y=yr.eduexp + adobirth))
 g1 + geom_point()
 ```
 
