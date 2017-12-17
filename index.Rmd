@@ -1,6 +1,7 @@
 ---
 title: "Final Assignment"
-author: "Gonzalo de Quesada"
+author: "Gonzalo de Quesada, email: gonzalo.dequesadaalzamora@helsinki.fi"
+email: "gonzalo.dequesadaalzamora@helsinki.fi"
 date: "12 de diciembre de 2017"
 output: 
 html_document:
@@ -12,4 +13,86 @@ html_document:
     fig_height: 4
     code_folding: hide
 ---
-# Final Assignment
+## Introduction
+
+## Data
+
+The dataset comes from the United Nations Development Programme. this dataset is the product of two different datasets used to calculate the human development index. for more information about the data you can visit the United Nations Development Programme [website](http://hdr.undp.org/en/content/human-development-index-hdi) and also check the [technical notes](http://hdr.undp.org/sites/default/files/hdr2015_technical_notes.pdf).
+
+Lets inspect the structure of the dataset.it contains 177 observations and 6 variables.
+
+```{r, data, message=FALSE}
+library(GGally)
+library(dplyr)
+library(corrplot)
+library(ggplot2)
+human <- read.csv("C:/Users/D E L L/Documents/GitHub/IODS-project/Data/human.csv", sep = ",", header = TRUE)
+glimpse(human)
+```
+
+The variables in the dataset are:
+
+yr.eduexp: Expected years of schooling
+
+lifexp: Life expectancy at birth
+
+GNI: Gross National Income per capita
+
+matermor: Maternal mortality ratio
+
+adobirth: Adolescent birth rate
+
+repreparl: Percetange of female representatives in parliament
+
+We now use the correlation matrix to see the relationship between the variables.
+
+```{r, plot}
+ggpairs(human)
+cor(human) %>% corrplot
+```
+
+We can see a strong positive correlation between life expectancy at birth and 
+
+## Methods
+
+## Results
+
+### Linear Regression
+
+```{r, res}
+model <- lm(matermor ~ lifexp + adobirth, data = human)
+summary(model)
+model
+```
+
+```{r, model}
+g1 <- ggplot(human, aes(x=matermor, y=lifexp + adobirth))
+g1 + geom_point()
+```
+
+```{r, plot1}
+par(mfrow = c(2,2))
+plot(model, which= c(1,2,5))
+```
+
+### K-means
+
+```{r, km}
+human_scaled <- scale(human)
+summary(human_scaled)
+dist_eu <- dist(human_scaled)
+summary(dist_eu)
+```
+
+```{r, kmplot}
+k_max <- 10
+twcss <- sapply(1:k_max, function(k){kmeans (human_scaled, k)$tot.withinss})
+qplot(x = 1:k_max, y = twcss, geom = 'line')
+```
+
+```{r, kmplot1}
+km <-kmeans(human_scaled, centers = 2)
+pairs(human_scaled,col = km$cluster)
+```
+
+## Conclusions

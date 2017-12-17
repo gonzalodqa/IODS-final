@@ -17,13 +17,13 @@ cor(human) %>% corrplot
 
 # Model
 
-model <- lm(yr.eduexp ~ lifexp + matermor, data = human)
+model <- lm(matermor ~ lifexp + adobirth, data = human)
 summary(model)
 model
 
 #Plot
 
-g1 <- ggplot(human, aes(x=yr.eduexp, y=lifexp + matermor))
+g1 <- ggplot(human, aes(x=matermor, y=lifexp + adobirth))
 g1 + geom_point()
 
 par(mfrow = c(2,2))
