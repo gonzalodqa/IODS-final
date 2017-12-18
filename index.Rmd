@@ -57,9 +57,26 @@ We can see a strong positive correlation between maternal mortality and adolesce
 
 ## Methods
 
+We will use linear regression and k-means to analyse the data.
+
+### Linear Regression
+
+a linear regression analyse the relationship between a dependent variable y and one or more explanatory variables assuming the relashionship is linear.Linear regression can be expressed with the following formula:
+
+y = Ax + B
+
+Where A is the slope of the model and shows the relations in the model, and B is the point where the the model intersects the y axis. 
+Linear regression assume that the errors are normally distributed, have constant variance and they do not depend on the explanatory variables 
+
+### K-means
+
+K-means is a clustering method used to partition the input data set into k partitions (clusters) in which each observation belongs to the cluster with the nearest mean. To determine the optimal number of clusters we will use the cluster sum of squares.
+
 ## Results
 
 ### Linear Regression
+
+We now fit our model using maternal mortality rate as the target variable and adolescent birth rate and years of expected education as the explanatory variables.
 
 ```{r, res}
 model <- lm(matermor ~ yr.eduexp + adobirth, data = human)
@@ -72,12 +89,18 @@ g1 <- ggplot(human, aes(x=matermor, y=yr.eduexp + adobirth))
 g1 + geom_point()
 ```
 
+The p-value is very low confirming that there is relationship between variables. The multiple R squared value shows that 66.4% of the variability can be explained by the model.  
+
 ```{r, plot1}
 par(mfrow = c(2,2))
 plot(model, which= c(1,2,5))
 ```
 
+The Residuals vs Fitted plot is not well scattered which could indicate that the errors may not deoend on the target variable. The Normal QQ-plot shows that the errors are normally distributed. The Residuals vs Leverage plot shows that some values have more leverage than others. 
+
 ### K-means
+
+First we scaled our data so all the variables have a mean of 0 and calculate the euclidean distances.
 
 ```{r, km}
 human_scaled <- scale(human)
@@ -86,11 +109,15 @@ dist_eu <- dist(human_scaled)
 summary(dist_eu)
 ```
 
+Then we find out what is the optimal amount of clusters, which accordinf to the plot seems to be 2.
+
 ```{r, kmplot}
 k_max <- 10
 twcss <- sapply(1:k_max, function(k){kmeans (human_scaled, k)$tot.withinss})
 qplot(x = 1:k_max, y = twcss, geom = 'line')
 ```
+
+Finally, we plot the clusters. It seems that the countries with higher maternal mortality have less years of expected education and also the countries with higher maternal mortality are the ones with more adolescent birth rates.
 
 ```{r, kmplot1}
 km <-kmeans(human_scaled, centers = 2)
@@ -98,3 +125,5 @@ pairs(human_scaled,col = km$cluster)
 ```
 
 ## Conclusions
+
+Even though the model explains a positive correlation between maternal mortality and adolescent birth rate, and a strong negative correlation between maternal mortality and years of expected education. And even though we had a strong multiple R squared value, we can not assure that the relation is linear because the validation process suggests that the assumptions made are not reasonable enough.
